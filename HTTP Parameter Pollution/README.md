@@ -3,7 +3,7 @@
 
 ## Summary
 
-HTTP Parameter Pollution (HPP) is a Web attack evasion technique that allows an attacker to craft a HTTP request in order to manipulate web logics or retrieve hidden information. This evasion technique is based on splitting an attack vector between multiple instances of a parameter with the same name (?param1=value&param1=value). As there is no formal way of parsing HTTP parameters, individual web technologies have their on unique way of parsing and reading URL parameters with the same name. Some taking the first occurance, some taking the last occurance, and some reading it as an array. This behavior is abused by the attacker in order to bypass pattern-based security mechanisms. 
+HTTP Parameter Pollution (HPP) is a Web attack evasion technique that allows an attacker to craft a HTTP request in order to manipulate web logics or retrieve hidden information. This evasion technique is based on splitting an attack vector between multiple instances of a parameter with the same name (?param1=value&param1=value). As there is no formal way of parsing HTTP parameters, individual web technologies have their own unique way of parsing and reading URL parameters with the same name. Some taking the first occurance, some taking the last occurance, and some reading it as an array. This behavior is abused by the attacker in order to bypass pattern-based security mechanisms. 
 
 
 ## Tools
@@ -24,20 +24,24 @@ Attacker -- http://example.com?search=Beth&search=' OR 1=1;## --> WAF (reads fir
 
 ### Table of refence for which technology reads which parameter
 When ?par1=a&par1=b
-| Technology                                      | Parsing Result  |outcome (par1=)|
-| ------------------                              |---------------  |:-------------:|
-| ASP.NET/IIS                                     |All occurrences  |a,b            |
-| ASP/IIS                                         |All occurrences  |a,b            |
-| PHP/Apache                                      |Last occurrence  |b              |
-| PHP/Zues                                        |Last occurrence  |b              |
-| JSP,Servlet/Tomcat                              |First occurrence |a              |
-| Perl CGI/Apache                                 |First occurrence |a              |
-| Python Flask                                    |First occurrence |a              |
-| Python Django                                   |Last occurrence  |b              |
-| Nodejs                                          |All occurrences  |a,b            |
-| Golang net/http - `r.URL.Query().Get("param")`  |First occurrence |a              |
-| Golang net/http - `r.URL.Query()["param"]`      |All occurrences  |a,b            |
-
+| Technology                                      | Parsing Result          |outcome (par1=)|
+| ------------------                              |---------------          |:-------------:|
+| ASP.NET/IIS                                     |All occurrences          |a,b            |
+| ASP/IIS                                         |All occurrences          |a,b            |
+| PHP/Apache                                      |Last occurrence          |b              |
+| PHP/Zues                                        |Last occurrence          |b              |
+| JSP,Servlet/Tomcat                              |First occurrence         |a              |
+| Perl CGI/Apache                                 |First occurrence         |a              |
+| Python Flask                                    |First occurrence         |a              |
+| Python Django                                   |Last occurrence          |b              |
+| Nodejs                                          |All occurrences          |a,b            |
+| Golang net/http - `r.URL.Query().Get("param")`  |First occurrence         |a              |
+| Golang net/http - `r.URL.Query()["param"]`      |All occurrences          |a,b            |
+| IBM Lotus Domino                                |First occurrence         |a              |
+| IBM HTTP Server                                 |First occurrence         |a              |
+| Perl CGI/Apache                                 |First occurrence         |a              |
+| mod_wsgi (Python)/Apache                        |First occurrence         |a              |
+| Python/Zope                                     |All occurences in array  |['a','b']      |
 
 ## References
 - [HTTP Parameter Pollution - Imperva](https://www.imperva.com/learn/application-security/http-parameter-pollution/)
